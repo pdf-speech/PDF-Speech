@@ -1,21 +1,26 @@
 # importing the modules
 import PyPDF2
 import pyttsx3
-  
-# path of the PDF file
-path = open('Brief history of time.pdf', 'rb')
-  
-# creating a PdfFileReader object
-pdfReader = PyPDF2.PdfFileReader(path)
-  
-# the page with which you want to start
-# this will read the book of 25th page.
-from_page = pdfReader.getPage(30)
-  
-# extracting the text from the PDF
-entry_text = from_page.extractText()
-  
-# reading the text
-# speak = pyttsx3.init()
-# speak.say(text)
-# speak.runAndWait()
+
+class PDFReader:
+    def __init__(self,file_path):
+        # path of the PDF file
+        self.path = open(file_path, 'rb')
+
+    def translate_pdf(self):
+        # creating a PdfFileReader object
+        pdfReader = PyPDF2.PdfFileReader(self.path)
+
+        # the page with which you want to start
+        # this will read the book of 25th page.
+        from_page = pdfReader.getPage(30)
+
+        # extracting the text from the PDF
+        entry_text = from_page.extractText()
+
+        return str(entry_text)
+
+    # reading the text
+    # speak = pyttsx3.init()
+    # speak.say(entry_text)
+    # speak.runAndWait()

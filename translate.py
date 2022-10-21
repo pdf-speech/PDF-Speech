@@ -43,5 +43,6 @@ class MyTranslate:
         # print(json.dumps(response, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
 
 
+
 # test = Translate(text_input="Maza nav Yash aahe", translate_to_language="mr")
 # test.connection()

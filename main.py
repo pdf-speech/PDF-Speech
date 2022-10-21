@@ -5,7 +5,7 @@ from tkinter import *
 from gtts import gTTS
 from playsound import playsound
 from translate import MyTranslate
-from pdf_to_speech import entry_text
+from pdf_to_speech import PDFReader
 
 root = Tk()
 root.geometry("1250x950")
@@ -37,10 +37,16 @@ def browse_files():
 
 
 def text_to_speech_file():
+    # language = lang_entry_field.get()
+    # with codecs.open(browse_files(), encoding='utf-8') as f:
+    #     file = f.read().replace("\n", " ")
+    pdf_obj = PDFReader(file_path="brief-history-of-time.pdf")
+    pdf_data = pdf_obj.translate_pdf()
     language = lang_entry_field.get()
-    with codecs.open(browse_files(), encoding='utf-8') as f:
-        file = f.read().replace("\n", " ")
-    speech = gTTS(text=str(file), lang=language, slow=False)
+    test = MyTranslate(text_input=pdf_data, translate_to_language=language)
+    translated_text = test.connection()
+    message = translated_text
+    speech = gTTS(text=message, lang=language, slow=False)
     speech.save('speech.mp3')
     playsound('speech.mp3')
     os.remove('speech.mp3')
@@ -83,7 +89,7 @@ Button(root, font='arial 15 bold', text='RESET', compound=LEFT, image=reset_butt
        bg='white').place(x=900, y=320)
 
 file_button = PhotoImage(file="venv/Images/file.png")
-Button(root, text="PLAY_Text File", font='arial 15 bold', command=text_to_speech_file, compound=LEFT, image=file_button,
+Button(root, text="Play Text File", font='arial 15 bold', command=text_to_speech_file, compound=LEFT, image=file_button,
        width=200, bg='white').place(x=600, y=400)
 
 pause_file_button = PhotoImage(file="venv/Images/pause.png")
