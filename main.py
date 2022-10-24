@@ -1,5 +1,7 @@
 import os
 from tkinter import *
+from tkinter import messagebox
+
 from gtts import gTTS
 from playsound import playsound
 from translate import MyTranslate
@@ -26,8 +28,8 @@ lang_entry_field = Entry(root, textvariable=lang, width=50, font="Robote 20")
 lang_entry_field.place(x=600, y=200, width=350, height=40)
 
 
-def text_to_speech(text, language):
-    speech = gTTS(text=text, lang=language, slow=False)
+def text_to_speech(message, language):
+    speech = gTTS(text=message, lang=language, slow=False)
     speech.save("assets/sounds/speech.mp3")
     playsound('assets/sounds/speech.mp3', True)
     os.remove('assets/sounds/speech.mp3')
@@ -40,17 +42,20 @@ def translate(text_input, language):
 
 
 def file_handler():
-    pdf_obj = PDFToText()
-    pdf_data = pdf_obj.translate_pdf()
     language = lang_entry_field.get()
-    message = translate(text_input=pdf_data, language=language)
-    text_to_speech(text=message, language=language)
+    if language == "":
+        messagebox.showwarning("Warning", "Language field can't be empty")
+    else:
+        pdf_obj = PDFToText()
+        pdf_data = pdf_obj.translate_pdf()
+        file_message = translate(text_input=pdf_data, language=language)
+        text_to_speech(message=file_message, language=language)
 
 
 def input_text_handler():
     language = lang_entry_field.get()
-    message = translate(text_input=message_entry_field.get("1.0", END), language=language)
-    text_to_speech(text=message, language=language)
+    input_text_message = translate(text_input=message_entry_field.get("1.0", END), language=language)
+    text_to_speech(message=input_text_message, language=language)
 
 
 def exit_handler():
@@ -58,8 +63,9 @@ def exit_handler():
 
 
 def reset():
-    Msg.set("")
     lang.set("")
+    message_entry_field.delete("1.0", END)
+
 
 
 speak_button = PhotoImage(file="assets/Images/speak-man.png")
